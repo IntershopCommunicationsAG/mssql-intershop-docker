@@ -1,4 +1,4 @@
-Using this project you can create your own Microsoft SQL database docker container prepared to be used as database for Intershop Commerce Management. 
+Using this project you can create your own Microsoft SQL database docker container prepared to be used as database for Intershop Commerce Management for development purposes. 
 
 To build the container image use the following command:
 ```
