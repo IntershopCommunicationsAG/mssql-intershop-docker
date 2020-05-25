@@ -1,23 +1,53 @@
-Using this project you can create your own Microsoft SQL database docker container prepared to be used as database for Intershop Commerce Management for development purposes. 
+Using this project you can create your own Microsoft SQL database docker container prepared to be used as database for Intershop Commerce Management for development purposes.
 
-To build the container image use the following command:
+---
+
+To get a locally running database in your docker environment the following steps are necessary.
+
+Clone or download the project and change to the project folder
 ```
-docker build . --tag companyname/mssql-intershop
+git clone https://github.com/IntershopCommunicationsAG/mssql-intershop-docker.git
+
+cd mssql-intershop-docker
+```
+Build the container image
+```
+docker build . --tag mssql-intershop
+```
+Run the container
+```
+docker run -d -p 1433:1433 --name mssql-intershop mssql-intershop
 ```
 
-To run the container use:
+---
+
+To connect your local ICM development environment with the local docker mssql database your configuration in the `environment.properties` of your development machine should look like this.
 ```
-docker run -d -p 1433:1433 companyname/mssql-intershop
+# Database configuration
+databaseType = mssql
+jdbcUrl = jdbc:sqlserver://localhost:1433;database=DB; 
+databaseUser = intershop 
+databasePassword = intershop
+
+# these partly Oracle specific settings are still needed for the deployment script
+databaseHost = DB
+databasePort = 1433 
+databaseTnsAlias = ISSERVER.world 
+databaseServiceName = XE
+oracleClientDir = C:/Oracle/client12cR1
 ```
 
-Your configuration in environment.properties on your development machine should look like this:
+---
+
+**Note**
+
+If you clone and build the docker container on a Windows environment make sure the line endings of the `startup.sh` script are Linux style before building the container image. Otherwise you will get the following errors when running the container.
+
 ```
-databaseType=mssql
-intershop.jdbc.url =jdbc:sqlserver://localhost:1433;database=db
-intershop.jdbc.user=intershop
-intershop.jdbc.password=intershop
+/startup.sh: line 2: $'\r': command not found
+: invalid signal specificationM
+/startup.sh: line 4: $'\r': command not found
+/startup.sh: line 5: $'\r': command not found
+/startup.sh: line 6: $'\r': command not found
+/startup.sh: line 7: $'wait\r': command not found
 ```
-
-
-
-
