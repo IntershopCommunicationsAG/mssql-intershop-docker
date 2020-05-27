@@ -36,18 +36,3 @@ databaseTnsAlias = ISSERVER.world
 databaseServiceName = XE
 oracleClientDir = C:/Oracle/client12cR1
 ```
-
----
-
-**Note**
-
-If you clone and build the docker container on a Windows environment make sure the line endings of the `startup.sh` script are Linux style before building the container image. Otherwise you will get the following errors when running the container.
-
-```
-/startup.sh: line 2: $'\r': command not found
-: invalid signal specificationM
-/startup.sh: line 4: $'\r': command not found
-/startup.sh: line 5: $'\r': command not found
-/startup.sh: line 6: $'\r': command not found
-/startup.sh: line 7: $'wait\r': command not found
-```
