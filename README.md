@@ -10,7 +10,7 @@ version: "3.4"
 services:
   mssql-server:
     # build: .
-    image: "docker-internal.rnd.intershop.de/intershop/mssql-server:latest"
+    image: "intershophub/mssql-intershop:latest"
     
     ports:
     - "1433:1433"
