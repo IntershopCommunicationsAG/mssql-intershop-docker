@@ -4,6 +4,11 @@ This container prepares a MSSQL Server for Intershop development.
 
 ## Configuration & Startup of a container
 
+Simple command
+```
+docker run -d -p 1433:1433 --name mssql-intershop --env ACCEPT_EULA=Y --env SA_PASSWORD=password mssql-intershop
+```
+
 Compose File
 ```
 version: "3.4"
@@ -83,7 +88,31 @@ databasePassword = intershop
 
 ## Build the Container
 
-Build the container image
+Build the container image with Ubuntu 16.04 and MSSQL Server 2017
 ```
 docker build . --tag mssql-intershop
 ```
+
+Build the container image with Ubuntu 18.04 and MSSQL Server 2019 and tag mssql-intershop:2019-latest
+```
+docker build . --build-arg UBUNTUVERSION=18.04 --build-arg MSSQLVERSION=2019 --tag mssql-intershop:2019-latest
+```
+
+The following parameters are tested
+
+| Ubuntu Version <br> UBUNTUVERSION | MSSQL Server Version <br> MSSQLVERSION |
+|------------------------|----------------------|
+| 16.04 (Default Value)  | 2017 (Default Value) |
+| 16.04 (Default Value)  | 2019 |
+| 18.04  | 2019 |
+
+## License
+
+Copyright 2014-2020 Intershop Communications.
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
