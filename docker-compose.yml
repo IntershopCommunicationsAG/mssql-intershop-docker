@@ -1,0 +1,24 @@
+version: "3.4"
+services:
+  mssql-server:
+    image: ${IMAGE}
+    container_name: mssql-server${BUILDID}
+    ports:
+    - "1433:1433"
+
+    volumes:
+      - type: volume
+        source: mssqlserver
+        target: /var/opt/mssql
+        volume:
+          nocopy: true
+
+    environment:
+      ACCEPT_EULA:  Y
+      SA_PASSWORD:  1nstershop5A
+      MSSQL_PID:    Developer
+      RECREATEDB:   "false"
+      RECREATEUSER: "false"
+
+volumes:
+  mssqlserver:

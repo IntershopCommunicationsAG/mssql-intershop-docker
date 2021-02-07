@@ -1,24 +1,64 @@
-FROM orbeon/mssql-server-linux-fts
-ENV ACCEPT_EULA=Y
+#
+# Copyright 2021 Intershop Communications AG.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+ARG UBUNTUVERSION=16.04
+FROM ubuntu:$UBUNTUVERSION
+
+ARG MSSQLVERSION=2017
+ARG UBUNTUVERSION=16.04
+
+LABEL maintainer="a-team@intershop.de"
+LABEL mssqlversion="$MSSQLVERSION"
+
 RUN export DEBIAN_FRONTEND=noninteractive && \
     apt-get update && \
-    apt-get install -y curl wget unixodbc locales && \
-    wget https://packages.microsoft.com/ubuntu/16.04/prod/pool/main/m/mssql-tools/mssql-tools_14.0.5.0-1_amd64.deb && \
-    wget https://packages.microsoft.com/ubuntu/16.04/prod/pool/main/m/msodbcsql/msodbcsql_13.1.6.0-1_amd64.deb && \
+    apt-get install -yq curl apt-transport-https unzip gnupg2 && \
+    # Get official Microsoft repository configuration
+    curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
+    curl https://packages.microsoft.com/config/ubuntu/$UBUNTUVERSION/mssql-server-$MSSQLVERSION.list | tee /etc/apt/sources.list.d/mssql-server.list && \
+    curl https://packages.microsoft.com/config/ubuntu/$UBUNTUVERSION/prod.list > /etc/apt/sources.list.d/mssql-release.list && \
     apt-get update && \
-    dpkg -i msodbcsql_13.1.6.0-1_amd64.deb && \
-    dpkg -i mssql-tools_14.0.5.0-1_amd64.deb && \
-    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
-    locale-gen
-COPY icmdb.sql startup.sh /
-RUN (export MSSQL_SA_PASSWORD=Intershop1111 && /opt/mssql/bin/sqlservr --reset-sa-password &) && \
-    sleep 20 && \
-    echo "start complete" && \
-    /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Intershop1111 -q quit && \
-    /opt/mssql-tools/bin/sqlcmd -b -S localhost -U sa -P Intershop1111 -i /icmdb.sql && \
-    sleep 10 && \
-    ps -j -C sqlservr --no-headers | awk "{print \$1}" | xargs kill && \
-    sleep 10
-EXPOSE 1433
-CMD [ "bash", "/startup.sh" ]
-HEALTHCHECK --interval=30s --timeout=5s --start-period=120s --retries=8 CMD [ "/opt/mssql-tools/bin/sqlcmd", "-b", "-S", "localhost", "-U", "intershop", "-P", "intershop", "-q", "quit" ]
+    # Install SQL Server from apt
+    apt-get install -y mssql-server && \
+    # Install optional packages
+    apt-get install -y mssql-server-fts && \
+    ACCEPT_EULA=Y apt-get install -y mssql-tools locales && \
+    curl -ksSL -o /tmp/wait-for-port.zip https://github.com/bitnami/wait-for-port/releases/download/v1.0/wait-for-port.zip && \
+    unzip /tmp/wait-for-port.zip -d /usr/local/bin/ && rm -f /tmp/wait-for-port.zip &&  chmod a+x /usr/local/bin/wait-for-port && \
+    echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc && /bin/bash -c "source ~/.bashrc" && \
+    locale-gen en_US.UTF-8 && update-locale LANG=en_US.UTF-8 && \
+    # remove curl and others
+    apt-get purge -y curl apt-transport-https unzip && \
+    # Cleanup the Dockerfile
+    apt-get clean && rm -rf /var/lib/apt/lists && \
+    # Create app directory
+    mkdir -p /usr/src/icmdb && mkdir -p /var/opt/mssql/backup
+
+EXPOSE 1433/tcp
+EXPOSE 1434/tcp
+
+VOLUME [ "/var/opt/mssql/data", \
+         "/var/opt/mssql/backup" ]
+
+COPY scripts/ /usr/src/icmdb
+
+ENV ICM_DB_NAME=icmdb ICM_DB_USER=intershop ICM_DB_PASSWORD=intershop
+
+# Grant permissions for the import-data script to be executable
+RUN chmod +x /usr/src/icmdb/*.sh
+
+WORKDIR /usr/src/icmdb
+
+CMD ./entrypoint.sh
