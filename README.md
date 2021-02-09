@@ -86,6 +86,16 @@ databaseUser = intershop
 databasePassword = intershop
 ```
 
+Unfortunately it is also necessary to set some Oracle configuration properties for the development environment of ICM 7.10 and older. The availability of the properties or the path is checked.
+
+```
+databaseHost = DB
+databasePort = 1234
+databaseTnsAlias = server.world
+databaseServiceName = srvname
+oracleClientDir = C:/some/path/that/exists
+```
+
 ## Build the Container
 
 Build the container image with Ubuntu 16.04 and MSSQL Server 2017
