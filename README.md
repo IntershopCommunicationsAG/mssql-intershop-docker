@@ -6,7 +6,7 @@ This container prepares a MSSQL Server for Intershop development.
 
 Simple command
 ```
-docker run -d -p 1433:1433 --name mssql-intershop --env ACCEPT_EULA=Y --env SA_PASSWORD=password mssql-intershop
+docker run -d -p 1433:1433 --name mssql-intershop --env ACCEPT_EULA=Y --env SA_PASSWORD=1nstershop5A mssql-intershop
 ```
 
 Compose File
@@ -81,7 +81,7 @@ To connect your local ICM development environment with the local docker mssql da
 ```
 # Database configuration
 databaseType = mssql
-jdbcUrl = jdbc:sqlserver://localhost:1433;database=DB; 
+jdbcUrl = jdbc:sqlserver://localhost:1433;database=icmdb; 
 databaseUser = intershop 
 databasePassword = intershop
 ```
@@ -89,7 +89,7 @@ databasePassword = intershop
 Unfortunately it is also necessary to set some Oracle configuration properties for the development environment of ICM 7.10 and older. The availability of the properties or the path is checked.
 
 ```
-databaseHost = DB
+databaseHost = icmdb
 databasePort = 1234
 databaseTnsAlias = server.world
 databaseServiceName = srvname
