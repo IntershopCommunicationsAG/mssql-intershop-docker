@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-ARG UBUNTUVERSION=18.04
+ARG UBUNTUVERSION=20.04
 FROM ubuntu:$UBUNTUVERSION
 
 ARG MSSQLVERSION=2019
-ARG UBUNTUVERSION=18.04
+ARG UBUNTUVERSION=20.04
 
 LABEL maintainer="a-team@intershop.de"
 LABEL mssqlversion="$MSSQLVERSION"
