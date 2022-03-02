@@ -6,7 +6,7 @@ This container prepares a MSSQL Server for Intershop development.
 
 Simple command
 ```
-docker run -d -p 1433:1433 --name mssql-intershop --env ACCEPT_EULA=Y --env SA_PASSWORD=1nstershop5A mssql-intershop
+docker run -d -p 1433:1433 --name mssql-intershop --env ACCEPT_EULA=Y --env SA_PASSWORD=1nstershop5A intershophub/mssql-intershop:<tag>
 ```
 
 Compose File
@@ -15,7 +15,7 @@ version: "3.4"
 services:
   mssql-server:
     # build: .
-    image: "intershophub/mssql-intershop:latest"
+    image: "intershophub/mssql-intershop:<tag>"
     
     ports:
     - "1433:1433"
