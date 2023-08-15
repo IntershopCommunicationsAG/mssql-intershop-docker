@@ -10,7 +10,8 @@ if [ -z ${RECREATEDB+x} ]; then
     echo "Database is used from volume."
     RECREATE_DB=0
 else
-    if [[ $(fgrep -ix $RECREATEDB <<< "TRUE") ]]; then
+    RECREATEDB=$(echo "$RECREATEDB" | tr '[:upper:]' '[:lower:]')
+    if [[ $RECREATEDB -eq 1 || $RECREATEDB ]]; then
         echo "Database will be recreated - all data are droped."
         RECREATE_DB=1
     else
@@ -23,7 +24,8 @@ if [ -z ${RECREATEUSER+x} ]; then
     echo "Database is used with the existing database user."
     RECREATE_USER=0
 else
-    if [[ $(fgrep -ix $RECREATEUSER <<< "TRUE") ]]; then
+    RECREATEUSER=$(echo "$RECREATEUSER" | tr '[:upper:]' '[:lower:]')
+    if [[ $RECREATEUSER -eq 1 || $RECREATEUSER ]]; then
         echo "Database user will be recreated."
         RECREATE_USER=1
     else
