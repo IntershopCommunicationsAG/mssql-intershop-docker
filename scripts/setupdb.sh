@@ -11,7 +11,7 @@ if [ -z ${RECREATEDB+x} ]; then
     RECREATE_DB=0
 else
     RECREATEDB=$(echo "$RECREATEDB" | tr '[:upper:]' '[:lower:]')
-    if [[ $RECREATEDB -eq 1 || $RECREATEDB ]]; then
+    if [[ $RECREATEDB -eq 1 || "$RECREATEDB" = true ]]; then
         echo "Database will be recreated - all data are droped."
         RECREATE_DB=1
     else
@@ -25,7 +25,7 @@ if [ -z ${RECREATEUSER+x} ]; then
     RECREATE_USER=0
 else
     RECREATEUSER=$(echo "$RECREATEUSER" | tr '[:upper:]' '[:lower:]')
-    if [[ $RECREATEUSER -eq 1 || $RECREATEUSER ]]; then
+    if [[ $RECREATEUSER -eq 1 || "$RECREATEUSER" = true ]]; then
         echo "Database user will be recreated."
         RECREATE_USER=1
     else
