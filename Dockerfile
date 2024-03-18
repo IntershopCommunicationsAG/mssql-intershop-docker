@@ -24,9 +24,9 @@ LABEL mssqlversion="$MSSQLVERSION"
 
 RUN export DEBIAN_FRONTEND=noninteractive && \
     apt-get update && \
-    apt-get install -yq curl apt-transport-https unzip gnupg2 && \
+    apt-get install -yq curl apt-transport-https unzip gnupg2 sudo && \
     # Get official Microsoft repository configuration
-    curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /usr/share/keyrings/microsoft-prod.gpg && \
+    curl https://packages.microsoft.com/keys/microsoft.asc | sudo tee /etc/apt/trusted.gpg.d/microsoft.asc && \
     curl -fsSL https://packages.microsoft.com/config/ubuntu/$UBUNTUVERSION/mssql-server-$MSSQLVERSION.list | sudo tee /etc/apt/sources.list.d/mssql-server-$MSSQLVERSION.list && \
     curl -fsSL https://packages.microsoft.com/config/ubuntu/$UBUNTUVERSION/prod.list > /etc/apt/sources.list.d/mssql-release.list && \
     apt-get update && \
