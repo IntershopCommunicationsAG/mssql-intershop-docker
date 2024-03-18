@@ -47,4 +47,4 @@ do
     /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d master -q "EXEC createIcmDB @DBName = ${dbNames[i]}, @UserID = ${dbUsers[i]}, @Password = ${dbPasswords[i]}, @RecreateDB = ${RECREATE_DB}, @RecreateUser = ${RECREATE_USER}"
 done
 
-
+/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -Q "SELECT @@VERSION"
