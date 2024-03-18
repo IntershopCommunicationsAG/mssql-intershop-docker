@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-ARG UBUNTUVERSION=20.04
+ARG UBUNTUVERSION=22.04
 FROM ubuntu:$UBUNTUVERSION
 
 ARG MSSQLVERSION=2022
-ARG UBUNTUVERSION=20.04
+ARG UBUNTUVERSION=22.04
 
 LABEL maintainer="a-team@intershop.de"
 LABEL mssqlversion="$MSSQLVERSION"
@@ -26,9 +26,9 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     apt-get update && \
     apt-get install -yq curl apt-transport-https unzip gnupg2 && \
     # Get official Microsoft repository configuration
-    curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
-    curl https://packages.microsoft.com/config/ubuntu/$UBUNTUVERSION/mssql-server-$MSSQLVERSION.list | tee /etc/apt/sources.list.d/mssql-server.list && \
-    curl https://packages.microsoft.com/config/ubuntu/$UBUNTUVERSION/prod.list > /etc/apt/sources.list.d/mssql-release.list && \
+    curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /usr/share/keyrings/microsoft-prod.gpg && \
+    curl -fsSL https://packages.microsoft.com/config/ubuntu/$UBUNTUVERSION/mssql-server-$MSSQLVERSION.list | sudo tee /etc/apt/sources.list.d/mssql-server-$MSSQLVERSION.list && \
+    curl -fsSL https://packages.microsoft.com/config/ubuntu/$UBUNTUVERSION/prod.list > /etc/apt/sources.list.d/mssql-release.list && \
     apt-get update && \
     # Install SQL Server from apt
     apt-get install -y mssql-server && \
