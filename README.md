@@ -118,6 +118,10 @@ The following parameters are tested
 | 16.04 (Default Value)  | 2019 |
 | 18.04  | 2019 |
 | 20.04  | 2022 |
+| 22.04  | 2022 |
+
+The latest version is 2022 CU 12 on Ubuntu 22.04. See https://learn.microsoft.com/en-us/troubleshoot/sql/releases/sqlserver-2022/cumulativeupdate12 
+and https://learn.microsoft.com/en-us/sql/linux/quickstart-install-connect-ubuntu?view=sql-server-linux-ver16&preserve-view=true&tabs=ubuntu2204.
 
 ## License
 
