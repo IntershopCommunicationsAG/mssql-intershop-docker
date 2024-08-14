@@ -10,6 +10,8 @@
 # editor backup files
 **~
 
+# IntelliJ IDEA project files
+.idea/
 
 # viual code
 .vscode/**/*
