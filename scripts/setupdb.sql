@@ -147,5 +147,10 @@ BEGIN
  EXECUTE sp_executesql @Sql;
  END
 
+ print 'Grant permissions to view server performance state ...';
+ SET @Sql = 'GRANT VIEW SERVER PERFORMANCE STATE TO ' + QUOTENAME(@UserID)
+ print 'Executing SQL: ' + @Sql;
+ EXECUTE sp_executesql @Sql;
+
 END;
 GO
