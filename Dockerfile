@@ -19,7 +19,7 @@ FROM ubuntu:$UBUNTUVERSION
 ARG MSSQLVERSION=2017
 ARG UBUNTUVERSION=16.04
 
-LABEL maintainer="a-team@intershop.de"
+LABEL maintainer="pe-team@intershop.de
 LABEL mssqlversion="$MSSQLVERSION"
 
 RUN export DEBIAN_FRONTEND=noninteractive && \
