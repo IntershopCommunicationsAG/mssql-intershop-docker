@@ -1,5 +1,5 @@
 #
-# Copyright 2021 Intershop Communications AG.
+# Copyright 2025 Intershop Communications AG.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ ARG UBUNTUVERSION=16.04
 FROM ubuntu:$UBUNTUVERSION
 
 ARG MSSQLVERSION=2017
-ARG UBUNTUVERSION=16.04
+ARG UBUNTUVERSION=18.04
 
 LABEL maintainer="pe-team@intershop.de"
 LABEL mssqlversion="$MSSQLVERSION"
