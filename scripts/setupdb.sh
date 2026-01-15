@@ -37,14 +37,14 @@ fi
 export RECREATE_DB RECREATE_USER
 
 #run the setup script to create the DB and the schema in the DB
-/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d master -i setupdb.sql
+/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d master -i setupdb.sql -C
 
 IFS=',' read -ra dbUsers <<< "$ICM_DB_USER"
 IFS=',' read -ra dbNames <<< "$ICM_DB_NAME"
 IFS=',' read -ra dbPasswords <<< "$ICM_DB_PASSWORD"
 for i in "${!dbUsers[@]}"
 do
-    /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d master -q "EXEC createIcmDB @DBName = ${dbNames[i]}, @UserID = ${dbUsers[i]}, @Password = ${dbPasswords[i]}, @RecreateDB = ${RECREATE_DB}, @RecreateUser = ${RECREATE_USER}"
+    /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d master -q "EXEC createIcmDB @DBName = ${dbNames[i]}, @UserID = ${dbUsers[i]}, @Password = ${dbPasswords[i]}, @RecreateDB = ${RECREATE_DB}, @RecreateUser = ${RECREATE_USER}" -C
 done
 
-/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -Q "SELECT @@VERSION"
+/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -Q "SELECT @@VERSION" -C
