@@ -38,6 +38,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     ACCEPT_EULA=Y apt-get install -y mssql-tools18 locales && \
     curl -ksSL -o /tmp/wait-for-port.zip https://github.com/bitnami/wait-for-port/releases/download/v1.0/wait-for-port.zip && \
     unzip /tmp/wait-for-port.zip -d /usr/local/bin/ && rm -f /tmp/wait-for-port.zip &&  chmod a+x /usr/local/bin/wait-for-port && \
+    ln -s /opt/mssql-tools /opt/mssql-tools18 && \
     echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc && /bin/bash -c "source ~/.bashrc" && \
     locale-gen en_US.UTF-8 && update-locale LANG=en_US.UTF-8 && \
     # remove curl and others
